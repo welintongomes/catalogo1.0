@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo</title>
+
+    <!-- Bootstrap CSS -->
+
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        body h3 {
+            font-size: 14px;
+            font-weight: 700;
+
+
+
+        }
+        body {
+            padding-top: 3.5rem;
+        }
+
+        .resultado-item.expanded h3 {
+
+            font-size: 30px;
+            margin: 10px;
+            white-space: normal;
+
+        }
+
+        .resultado-item h3 {
+
+            width: 105%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Botões de editar e excluir sempre visíveis */
+        .resultado-item .btn {
+            margin-bottom: 0px;
+            border-radius: 20px;
+            height: 30px;
+            text-size-adjust: auto;
+            font-size: 11px;
+            padding: 1px 3px;
+            font-size: 10px;
+        }
+
+        div.form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+
+
+        .codigo {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            margin-right: 1px;
+
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .config-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .btn-salvar {
+            margin-top: 10px;
+
+        }
+
+        .config-panel {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            z-index: 1000;
+            width: 150px;
+        }
+
+        .config-panel h5 {
+            margin-bottom: 10px;
+        }
+
+        .d-none {
+            display: none;
+        }
+
+
+        /* Estilos para o tema dark */
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /*telas onde ficam os textos titulo e descrição*/
+        .dark-mode .form-control {
+            background-color: #555;
+            color: white;
+        }
+        .form-control {
+            margin-top: 12px;
+        }
+
+        .dark-mode .form-control::placeholder {
+            color: white;
+            margin-top: 2px;
+        }
+
+        .dark-mode .conteudo-pre {
+            color: rgb(238, 227, 227);
+        }
+
+        body.dark-mode .codigo {
+            background-color: #555;
+            color: rgb(213, 18, 18);
+        }
+
+        .dark-mode .resultado-item {
+            display: inline-block;
+            width: 250px;
+            height: 100px;
+            margin: 4px;
+            vertical-align: top;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            transition: width 0.3s ease, height 0.3s ease;
+            /* Suaviza a transição */
+            position: relative;
+            border: 2px solid #6b5c58;
+            padding: 10px;
+            border-top-left-radius: 21px;
+            border-bottom-left-radius: 0px;
+            border-top-right-radius: 12px;
+
+            border-bottom-right-radius: 21px;
+
+        }
+
+
+        .dark-mode .resultado-item.expanded .conteudo-pre {
+            height: 100%;
+            /* Altura ajustada ao container expandido */
+            width: 100%;
+            /* Largura ajustada ao container expandido */
+            overflow: auto;
+            /* Scrollbar horizontal e vertical */
+            white-space: normal;
+            /* Permite quebra de linha no texto longo */
+            word-wrap: break-word;
+            /* Quebra palavras muito longas */
+            background-color: #424237;
+            border: 1px solid #6f6f67;
+            border-radius: 3px;
+            color: rgb(225, 220, 220);
+
+        }
+
+        .dark-mode .resultado-item .expanded {
+            border-radius: 21px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        .resultado-item .expanded {
+            border-radius: 21px;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+
+
+
+
+
+
+        /*comece daqui */
+        /*daqui*/
+
+        .resultado-item {
+            display: inline-block;
+            height: 100px;
+            margin: 4px;
+            vertical-align: top;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            transition: width 0.3s ease, height 0.3s ease;
+            /* Suaviza a transição */
+            position: relative;
+            border: 2px solid #ddd;
+            padding: 10px;
+            border-radius: 21px;
+            border-bottom-left-radius: 0px;
+            /* width: 250px; */
+
+        }
+
+        /*inicio media query para largura dos itens criados*/
+        .resultado-item {
+            width: 100%;
+            /* Padrão para ocupar toda a largura em dispositivos pequenos */
+            /*max-width: 400px;  Limita o tamanho máximo dos itens */
+            margin: 1px auto;
+            /* Centraliza os itens */
+        }
+
+        .dark-mode .resultado-item {
+            width: 100%;
+            /* Padrão para ocupar toda a largura em dispositivos pequenos */
+            /*max-width: 400px;  Limita o tamanho máximo dos itens */
+            margin: 1px auto;
+            /* Centraliza os itens */
+        }
+
+        @media (min-width: 768px) {
+            .resultado-item {
+                width: 50%;
+                /* Em telas médias, os itens ocupam quase metade da tela */
+            }
+        }
+
+        @media (min-width: 768px) {
+            .dark-mode .resultado-item {
+                width: 50%;
+                /* Em telas médias, os itens ocupam quase metade da tela */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .resultado-item {
+                width: 33.33%;
+                /* Em telas maiores, os itens ocupam cerca de um terço da tela */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .dark-mode .resultado-item {
+                width: 33.33%;
+                /* Em telas maiores, os itens ocupam cerca de um terço da tela */
+            }
+        }
+
+        /*fim media query para largura dos itens criados*/
+
+        /*media query para os botões*/
+        @media (max-width: 378px) {
+            .mini-phone {  /* Estilos específicos para telas com largura máxima de 400px */
+                width: 100%;  /* Por exemplo, ocupar toda a largura */
+            }
+        }
+        /*fim media query para os botões*/
+
+        .resultado-item img {
+            max-width: 60%;
+            max-height: 80%;
+        }
+
+        .resultado-item .conteudo-pre {
+            height: 58px;
+            width: 86%;
+            overflow: hidden;
+            white-space: normal;
+            /* Mantém o texto em uma linha no modo miniatura */
+            text-overflow: ellipsis;
+        }
+
+        .resultado-item.expanded {
+            width: 90vw;
+            /* Expande ocupando 90% da largura da janela */
+            height: 80vh;
+            /* Expande ocupando 80% da altura da janela */
+            overflow: auto;
+            /* Permite scroll para todo o conteúdo */
+            border-bottom-right-radius: 0px;
+        }
+
+        .dark-mode .resultado-item.expanded {
+            width: 90vw;
+            /* Expande ocupando 90% da largura da janela */
+            height: 80vh;
+            /* Expande ocupando 80% da altura da janela */
+            overflow: auto;
+            /* Permite scroll para todo o conteúdo */
+            border-bottom-right-radius: 0px;
+        }
+
+        .resultado-item.expanded .conteudo-pre {
+            height: 100%;
+            /* Altura ajustada ao container expandido */
+            width: 100%;
+            /* Largura ajustada ao container expandido */
+            overflow: auto;
+            /* Scrollbar horizontal e vertical */
+            white-space: normal;
+            /* Permite quebra de linha no texto longo */
+            word-wrap: break-word;
+            /* Quebra palavras muito longas */
+            background-color: #f7f7f0;
+            border: 1px solid #ececea;
+            border-radius: 3px;
+
+            padding: 10px;
+            padding-right: 46px;
+        }
+
+        .resultado-item.expanded img {
+            max-height: 300px;
+            border-radius: 5px;
+        }
+
+
+
+
+        div .botoes-container {
+
+            position: absolute;
+            /* bottom: 1.5px; */
+            right: 1.5px;
+            display: inline-flex;
+            flex-direction: column;
+        }
+
+        .resultado-item .botoes-container {
+            display: grid;
+            position: absolute;
+            bottom: 1.5px;
+            right: 1.5px;
+
+        }
+
+        /*.resultado-item.expanded .botoes-container {
+            display: none; /* Oculta os botões quando o item está expandido */
+
+
+
+        /*icones*/
+        /* Container para a imagem e os ícones */
+        .container-expansivel {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-width: 600px;
+        }
+
+        /* Estiliza a imagem */
+        .expanded-content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Container dos ícones */
+
+        /* Estilos dos ícones */
+        .icon-container i {
+            font-size: 2rem;
+            /* Tamanho grande dos ícones */
+            opacity: 0.7;
+            /* Transparência inicial */
+            cursor: pointer;
+            /* Mostra o ponteiro ao passar o mouse */
+            transition: opacity 0.3s ease;
+        }
+        
+
+        .icon-container i:hover {
+            opacity: 1;
+            /* Ícones ficam opacos ao passar o mouse */
+        }
+
+        .dark-mode .modal-body {
+            position: relative;
+            flex: 1 1 auto;
+            padding: var(--bs-modal-padding);
+            color: black;
+        }
+        /* Mantém o h1 fixo no topo */
+.text-center {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    z-index: 1000; /* Garante que o elemento fique acima de outros */
+    background-color: white; /* Adiciona um fundo para que o texto seja legível ao rolar */
+    width: 100%; /* Faz o título ocupar toda a largura da página */
+    text-align: center;
+    padding: 0.4rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Adiciona uma sombra para destacar */
+}
+
+.dark-mode .text-center {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    z-index: 1000; /* Garante que o elemento fique acima de outros */
+    background-color: rgb(66, 63, 63); /* Adiciona um fundo para que o texto seja legível ao rolar */
+    width: 100%; /* Faz o título ocupar toda a largura da página */
+    text-align: center;
+    padding: 0.1rem;
+    box-shadow: 0 2px 5px rgba(12, 12, 12, 0.2); /* Adiciona uma sombra para destacar */
+}
+/* Mantém o botão de configuração fixo no canto superior esquerdo */
+.config-button {
+    position: fixed;
+    top: 0.7px; /* Alinha no topo, ajustável conforme necessário */
+    left: 10px; /* Alinha na esquerda */
+    z-index: 1001; /* Garante que o botão fique acima de outros elementos */
+    background-color: white; /* Fundo para visibilidade */
+    padding: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destaque */
+}
+.dark-mode .config-button {
+    position: fixed;
+    top: 0.7px; /* Alinha no topo, ajustável conforme necessário */
+    left: 10px; /* Alinha na esquerda */
+    z-index: 1001; /* Garante que o botão fique acima de outros elementos */
+    background-color: rgb(58, 54, 54); /* Fundo para visibilidade */
+    padding: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destaque */
+}
+#configPanel {
+    position: fixed;
+    top: 1px; /* Alinha no topo, ajustável conforme necessário */
+    left: 33px; /* Alinha na esquerda */
+    z-index: 1001; /* Garante que o botão fique acima de outros elementos */
+    background-color: rgb(241, 239, 239); /* Fundo para visibilidade */
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destaque */
+}
+.dark-mode #configPanel {
+    position: fixed;
+    top: 1px; /* Alinha no topo, ajustável conforme necessário */
+    left: 33px; /* Alinha na esquerda */
+    z-index: 1001; /* Garante que o botão fique acima de outros elementos */
+    background-color: rgb(38, 36, 36); /* Fundo para visibilidade */
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destaque */
+}
+.dark-mode .pesquisa {
+    top: -8px;
+    position: fixed;
+    left: 7%;
+    transform: translateX(0%);
+    z-index: 1000;
+    /* background-color: white; */
+    width: 16%;
+    /* text-align: center; */
+    padding: 0.4rem;
+}
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center" onclick="voltarParaInicio()">Meu Catálogo</h1>
+
+        <!-- Botão de configuração no canto superior esquerdo -->
+        <div id="configButton" class="config-button">
+            <span>&#x22EE;</span>
+        </div>
+
+        <!-- Painel de opções -->
+        <div id="configPanel" class="config-panel d-none">
+            <h5>Configurações</h5>
+            <label>
+                <input type="radio" name="theme" value="light" id="lightTheme">
+                <span>Light</span>
+            </label>
+            <label>
+                <input type="radio" name="theme" value="dark" id="darkTheme">
+                <span>Dark</span>
+            </label>
+        </div>
+        
+        <!-- Barra de pesquisa -->
+        <input type="text" id="barraPesquisa" class="form-control mb-4 pesquisa " placeholder="Digite para pesquisar...">
+        <div class="resultado" id="resultadoPesquisa"></div>
+
+        <!-- Formulário para adicionar ou editar códigos -->
+        <form id="formAdicionar" class="mb-4">
+            <div class="form-group">
+                <input type="text" class="form-control" id="tituloCodigo" placeholder="Título" required>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" id="conteudoCodigo" rows="4" placeholder="Descrição" required></textarea>
+            </div>
+            <div class="form-group">
+                <label style="margin-top: 20px; margin-bottom: 10px;" for="imagemCodigo">Escolher Imagem
+                    (opcional)</label>
+                <input type="file" class="form-control-file" id="imagemCodigo">
+                <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
+            </div>
+        </form>
+
+
+
+        <!-- Botões de Backup, Restauração e outras ações -->
+        <div class="row">
+            <!-- configura os botões conforme o dispositivo acessado mb-4 espaçamento entre os botões-->
+            <!--  w-100 porcentagem de 0 a 100 configura expansão horizontal do botão  na tela-->
+            <div class="col-6 mini-phone col-sm-6 col-md-3 mb-4">
+                <button id="exportarDados" class="btn btn-success w-100">Exportar Dados</button>
+            </div>
+
+            <div class="col-6 mini-phone col-sm-6 col-md-3 mb-4">
+                <button id="importarDados" class="btn btn-info w-100">Importar Dados</button>
+                <input type="file" id="inputImportarDados" class="form-control-file" style="display: none;">
+            </div>
+
+            <div class="col-6 mini-phone col-sm-6 col-md-3 mb-4">
+                <button id="limparFormulario" class="btn btn-warning w-100">Limpar Formulário</button>
+            </div>
+
+            <div class="col-6 mini-phone col-sm-6 col-md-3 mb-4">
+                <button id="excluirTudo" class="btn btn-danger w-100">Eliminar Tudo</button>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <!-- Modal de Confirmação -->
+    <div class="modal fade" id="modalConfirmacao" tabindex="-1" aria-labelledby="modalConfirmacaoLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalConfirmacaoLabel">Confirmação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza que deseja Excluir todos os dados? esta ação não pode ser revertida!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="confirmarExclusao" class="btn btn-danger">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensagem de feedback -->
+    <div id="mensagemFeedback" class="alert d-none"></div>
+
+
+    <!-- Área para exibir mensagens de feedback -->
+    <div id="mensagemFeedback" class="alert d-none" role="alert"></div>
+
+
+    <!-- importar meu arquivo js -->
+    <script src="script.js"></script>
+
+    <!-- importar o bootstrap.js -->
+    <script src="bootstrap.bundle.min.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(function (registration) {
+                    console.log('Service Worker registrado com sucesso:', registration.scope);
+                }).catch(function (error) {
+                    console.log('Falha ao registrar o Service Worker:', error);
+                });
+        }
+          
+    </script>
+
+</body>
+
+</html>
+
+<!-- ************************************************************************************************************** -->
