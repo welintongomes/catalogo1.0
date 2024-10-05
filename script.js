@@ -1,7 +1,9 @@
-//funçao para voltar ao inicio da pagina ao clicar no titulo
-function voltarParaInicio() {
-    window.location.window.location.reload();
-     }
+//funçao para voltar ao inicio da pagina ao clicar en itens com o id
+  const titulo = document.getElementById('voltar-inicio');
+
+  titulo.addEventListener('click', () => {
+    location.reload(); // Recarrega a página atual
+  });
 // Abrindo ou criando o banco de dados IndexedDB
 function abrirBancoDeDados() {
     return new Promise((resolve, reject) => {
