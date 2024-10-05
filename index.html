@@ -444,7 +444,7 @@
     left: 10px; /* Alinha na esquerda */
     z-index: 1001; /* Garante que o botão fique acima de outros elementos */
     background-color: rgb(58, 54, 54); /* Fundo para visibilidade */
-    padding: 4px;
+    padding: 0px;
     border-radius: 5px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destaque */
@@ -471,16 +471,23 @@
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destaque */
 }
-.dark-mode .pesquisa {
-    top: -8px;
+.pesquisa {
+top: -6px;
     position: fixed;
-    left: 7%;
+    left: 8%;
     transform: translateX(0%);
     z-index: 1000;
-    /* background-color: white; */
-    width: 16%;
-    /* text-align: center; */
-    padding: 0.4rem;
+    width: 26%;
+    padding: 0.3%;
+}
+.dark-mode .pesquisa {
+top: -6px;
+    position: fixed;
+    left: 8%;
+    transform: translateX(0%);
+    z-index: 1000;
+    width: 26%;
+    padding: 0.3%;
 }
 </style>
 </head>
